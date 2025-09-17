@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brainrot Market</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            text-transform: uppercase;
+            animation: glow 2s ease-in-out infinite;
+        }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .tab {
+            background: #222;
+            padding: 10px 20px;
+            margin: 0 5px;
+            cursor: pointer;
+            border: 2px solid #fff;
+            transition: transform 0.3s, background 0.3s;
+        }
+        .tab:hover {
+            background: #444;
+            transform: scale(1.1);
+        }
+        .tab.active {
+            background: #fff;
+            color: #000;
+        }
+        .items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .item {
+            background: #111;
+            padding: 15px;
+            border: 2px solid #fff;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .item:hover {
+            transform: translateY(-5px);
+        }
+        .item h3 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+        .item p {
+            margin: 5px 0;
+        }
+        .buy-btn {
+            background: #fff;
+            color: #000;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .buy-btn:hover {
+            background: #ccc;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #000;
+            border: 2px solid #fff;
+            padding: 20px;
+            text-align: center;
+            animation: popup-appear 0.5s ease-out;
+        }
+        .popup.show {
+            display: block;
+        }
+        .close-btn {
+            background: #fff;
+            color: #000;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px #fff; }
+            50% { text-shadow: 0 0 20px #fff; }
+            100% { text-shadow: 0 0 5px #fff; }
+        }
+        @keyframes popup-appear {
+            from { transform: translate(-50%, -60%) scale(0.8); opacity: 0; }
+            to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Brainrot Market</h1>
+        <div class="tabs">
+            <div class="tab active" data-tab="Legendary">Legendary</div>
+            <div class="tab" data-tab="Mythic">Mythic</div>
+            <div class="tab" data-tab="Secret">Secret</div>
+            <div class="tab" data-tab="Brainrot God">Brainrot God</div>
+        </div>
+        <div class="items" id="items"></div>
+    </div>
+    <div class="popup" id="popup">
+        <p>Add <strong>synrender</strong> on Discord to proceed with your purchase!</p>
+        <button class="close-btn" onclick="closePopup()">Close</button>
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll('.tab');
+        const itemsContainer = document.getElementById('items');
+        const popup = document.getElementById('popup');
+
+        // Load brainrots from JSON
+        async function loadBrainrots() {
+            try {
+                const response = await fetch('brainrots.json');
+                const brainrots = await response.json();
+                displayBrainrots('Legendary', brainrots);
+            } catch (error) {
+                console.error('Error loading brainrots:', error);
+            }
+        }
+
+        function displayBrainrots(category, brainrots) {
+            itemsContainer.innerHTML = '';
+            const filteredBrainrots = brainrots.filter(b => b.category === category);
+            filteredBrainrots.forEach(brainrot => {
+                const item = document.createElement('div');
+                item.className = 'item';
+                item.innerHTML = `
+                    <h3>${brainrot.name}</h3>
+                    <p>Stock: ${brainrot.stock}</p>
+                    <button class="buy-btn" onclick="showPopup()">Buy</button>
+                `;
+                itemsContainer.appendChild(item);
+            });
+        }
+
+        function showPopup() {
+            popup.classList.add('show');
+        }
+
+        function closePopup() {
+            popup.classList.remove('show');
+        }
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                loadBrainrots().then(() => displayBrainrots(tab.dataset.tab));
+            });
+        });
+
+        // Initial load
+        loadBrainrots();
+    </script>
+</body>
+</html>
