@@ -1,6 +1,11 @@
 [
     {
-        "name": "La Grande Combinaison",
+        "name": "La Grande Combinaison / Normal",
+        "stock": 1,
+        "category": "Secret"
+    },
+    {
+        "name": "Los Combinasion / 90 million per sec",
         "stock": 1,
         "category": "Secret"
     }
