@@ -101,7 +101,7 @@
             font-weight: 700;
         }
         .item p {
-            margin: 0 0 15px;
+            margin: 0 0 10px;
             font-size: 0.9em;
             opacity: 0.8;
         }
@@ -140,10 +140,20 @@
         }
         .popup p {
             font-size: 1.1em;
-            margin: 0 0 20px;
+            margin: 0 0 10px;
         }
-        .popup p strong {
+        .popup a {
             color: #ccc;
+            text-decoration: underline;
+            transition: color 0.3s;
+        }
+        .popup a:hover {
+            color: #fff;
+        }
+        .popup .payment-note {
+            font-size: 0.9em;
+            opacity: 0.8;
+            margin: 10px 0 20px;
         }
         .close-btn {
             background: #fff;
@@ -171,6 +181,7 @@
             font-size: 1.1em;
             opacity: 0.8;
             animation: pulse 1.5s ease-in-out infinite;
+            grid-column: 1 / -1;
         }
         @media (max-width: 600px) {
             h1 {
@@ -220,7 +231,8 @@
         </div>
     </div>
     <div class="popup" id="popup">
-        <p>Add <strong>synrender</strong> on Discord to proceed with your purchase!</p>
+        <p>Join our <a href="https://rot-exchange.vercel.app/" target="_blank">Discord server</a> to proceed with your purchase!</p>
+        <p class="payment-note">We accept Robux for payments!</p>
         <button class="close-btn" onclick="closePopup()">Close</button>
     </div>
 
@@ -230,14 +242,21 @@
         const popup = document.getElementById('popup');
         const jsonUrl = 'https://raw.githubusercontent.com/Showcaser1/RotExchange/main/brainrots.json';
 
-        let allBrainrots = []; // Store loaded brainrots globally
+        let allBrainrots = [];
 
-        // Fallback data if GitHub fetch fails
+        // Fallback data
         const fallbackBrainrots = [
             {
-                "name": "La Grande Combinaison",
+                "name": "La Grande Combinaison / Normal",
                 "stock": 1,
-                "category": "Secret"
+                "category": "Secret",
+                "price": 100
+            },
+            {
+                "name": "Los Combinasion / 90 million per sec",
+                "stock": 1,
+                "category": "Secret",
+                "price": 200
             }
         ];
 
@@ -260,7 +279,7 @@
                 allBrainrots = fallbackBrainrots;
                 itemsContainer.innerHTML = '<p class="error">Failed to load from GitHub. Using fallback data.</p>';
             }
-            displayBrainrots(tabs[0].dataset.tab); // Display initial tab
+            displayBrainrots(tabs[0].dataset.tab);
         }
 
         function displayBrainrots(category) {
@@ -273,10 +292,11 @@
             filteredBrainrots.forEach((brainrot, index) => {
                 const item = document.createElement('div');
                 item.className = 'item';
-                item.style.animationDelay = `${index * 0.1}s`; // Staggered fade-in
+                item.style.animationDelay = `${index * 0.1}s`;
                 item.innerHTML = `
                     <h3>${brainrot.name}</h3>
                     <p>Stock: ${brainrot.stock}</p>
+                    <p>Price: ${brainrot.price} Robux</p>
                     <button class="buy-btn" onclick="showPopup()">Buy</button>
                 `;
                 itemsContainer.appendChild(item);
