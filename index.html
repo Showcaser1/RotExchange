@@ -101,9 +101,14 @@
             font-weight: 700;
         }
         .item p {
-            margin: 0 0 10px;
+            margin: 0 0 8px;
             font-size: 0.9em;
             opacity: 0.8;
+        }
+        .item p.price {
+            font-weight: 700;
+            font-size: 1em;
+            opacity: 1;
         }
         .buy-btn {
             background: #fff;
@@ -231,7 +236,7 @@
         </div>
     </div>
     <div class="popup" id="popup">
-        <p>Join our <a href="https://rot-exchange.vercel.app/" target="_blank">Discord server</a> to proceed with your purchase!</p>
+        <p>Join our <a href="https://discord.gg/4KmNdCNj" target="_blank">Discord server</a> to proceed with your purchase!</p>
         <p class="payment-note">We accept Robux for payments!</p>
         <button class="close-btn" onclick="closePopup()">Close</button>
     </div>
@@ -278,6 +283,8 @@
                 console.error('GitHub fetch failed, using fallback:', error);
                 allBrainrots = fallbackBrainrots;
                 itemsContainer.innerHTML = '<p class="error">Failed to load from GitHub. Using fallback data.</p>';
+                setTimeout(() => displayBrainrots(tabs[0].dataset.tab), 2000); // Delay to show error
+                return;
             }
             displayBrainrots(tabs[0].dataset.tab);
         }
@@ -296,7 +303,7 @@
                 item.innerHTML = `
                     <h3>${brainrot.name}</h3>
                     <p>Stock: ${brainrot.stock}</p>
-                    <p>Price: ${brainrot.price} Robux</p>
+                    <p class="price">Price: ${brainrot.price} Robux</p>
                     <button class="buy-btn" onclick="showPopup()">Buy</button>
                 `;
                 itemsContainer.appendChild(item);
