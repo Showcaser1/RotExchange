@@ -6,6 +6,12 @@
         "price": 575
     },
     {
+        "name": "Los TungTungTungcitos",
+        "stock": 1,
+        "category": "Brainrot God",
+        "price": 700
+    },
+    {
         "name": "Los Combinasion / 90 million per sec",
         "stock": 1,
         "category": "Secret",
@@ -13,7 +19,7 @@
     },
     {
         "name": "Job Job Job Sahur",
-        "stock": 3,
+        "stock": 4,
         "category": "Secret",
         "price": 250
     },
@@ -22,6 +28,54 @@
         "stock": 1,
         "category": "Secret",
         "price": 1450
+    },
+    {
+        "name": "Dul Dul Dul /4.8m per sec ",
+        "stock": 1,
+        "category": "Secret",
+        "price": 700
+    },
+    {
+        "name": "La cucaracha /4.7m per sec ",
+        "stock": 1,
+        "category": "Secret",
+        "price": 700
+    },
+    {
+        "name": "Cocofanto elefanto / Blood rot",
+        "stock": 1,
+        "category": "Brainrot God",
+        "price": 200
+    },
+    {
+        "name": "Odin din dun dun / Candy",
+        "stock": 1,
+        "category": "Brainrot God",
+        "price": 200
+    },
+    {
+        "name": "Tralaero Tralala",
+        "stock": 1,
+        "category": "Brainrot God",
+        "price": 50
+    },
+    {
+        "name": "Los orcalitos / 2m per sec",
+        "stock": 1,
+        "category": "Brainrot God",
+        "price": 200
+    },
+    {
+        "name": "Piccicone macchina / bubble gum",
+        "stock": 1,
+        "category": "Brainrot God",
+        "price": 50
+    },
+    {
+        "name": "Cocofanto elefanto / Diamond",
+        "stock": 1,
+        "category": "Brainrot God",
+        "price": 90
     },
     {
         "name": "Chachechi / Rainbow / 7m per sec",
