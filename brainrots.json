@@ -1,7 +1,7 @@
 [
     {
         "name": "La Grande Combinaison / Normal",
-        "stock": 1,
+        "stock": 0,
         "category": "Secret",
         "price": 575
     },
@@ -10,5 +10,35 @@
         "stock": 1,
         "category": "Secret",
         "price": 1035
+    },
+    {
+        "name": "Job Job Job Sahur",
+        "stock": 3,
+        "category": "Secret",
+        "price": 250
+    },
+    {
+        "name": "Esok sekolah",
+        "stock": 1,
+        "category": "Secret",
+        "price": 1450
+    },
+    {
+        "name": "Chachechi / Rainbow / 7m per sec",
+        "stock": 1,
+        "category": "Secret",
+        "price": 500
+    },
+    {
+        "name": "Graipuss Medusi / Rainbow / 10m",
+        "stock": 1,
+        "category": "Secret",
+        "price": 790
+    },
+    {
+        "name": "Blackhole goat",
+        "stock": 1,
+        "category": "Secret",
+        "price": 50
     }
 ]
