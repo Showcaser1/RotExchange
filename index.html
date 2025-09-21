@@ -3,102 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brainrot Market</title>
+    <title>Rot-Exchange</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             background-color: #000;
             color: #fff;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            overflow-x: hidden;
+        }
+        .header {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            background: #000;
+            z-index: 1000;
+            padding: 20px 0;
+            box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
         }
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             width: 90%;
-            padding: 40px 20px;
+            padding: 20px;
         }
         h1 {
             text-align: center;
-            font-size: 3em;
+            font-size: 2.5em;
+            font-weight: 700;
+            margin: 0 0 20px;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 40px;
-            animation: glow 2.5s ease-in-out infinite;
+            letter-spacing: 1px;
+        }
+        .search-bar {
+            margin-bottom: 20px;
+            position: relative;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 12px 40px 12px 15px;
+            border: 1px solid #fff;
+            border-radius: 5px;
+            background: #1a1a1a;
+            color: #fff;
+            font-size: 1em;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .search-bar input:focus {
+            border-color: #ccc;
+        }
+        .search-bar::after {
+            content: '🔍';
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.1em;
+            color: #ccc;
+        }
+        .search-bar .clear-btn {
+            position: absolute;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #ccc;
+            font-size: 1em;
+            cursor: pointer;
+            display: none;
         }
         .tabs {
             display: flex;
             justify-content: center;
             gap: 10px;
-            margin-bottom: 30px;
             flex-wrap: wrap;
         }
         .tab {
             background: #1a1a1a;
-            padding: 12px 24px;
-            border: 2px solid #fff;
-            border-radius: 8px;
+            padding: 10px 20px;
+            border: 1px solid #fff;
+            border-radius: 5px;
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.3s ease;
+            font-size: 0.95em;
+            transition: all 0.2s;
         }
         .tab:hover {
             background: #333;
-            transform: translateY(-3px);
-            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+            color: #fff;
         }
         .tab.active {
             background: #fff;
             color: #000;
-            transform: translateY(-3px);
         }
         .items {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
         }
         .item {
             background: #111;
-            padding: 20px;
-            border: 2px solid #fff;
-            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid #fff;
+            border-radius: 5px;
             text-align: center;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            opacity: 0;
-            animation: fadeIn 0.5s ease forwards;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
         .item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(255, 255, 255, 0.15);
-        }
-        .item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.1),
-                transparent
-            );
-            transition: 0.5s;
-        }
-        .item:hover::before {
-            left: 100%;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
         }
         .item h3 {
             margin: 0 0 10px;
-            font-size: 1.3em;
-            font-weight: 700;
+            font-size: 1.2em;
+            font-weight: 600;
         }
         .item p {
             margin: 0 0 8px;
@@ -106,7 +134,7 @@
             opacity: 0.8;
         }
         .item p.price {
-            font-weight: 700;
+            font-weight: 600;
             font-size: 1em;
             opacity: 1;
         }
@@ -114,15 +142,19 @@
             background: #fff;
             color: #000;
             border: none;
-            padding: 10px 20px;
+            padding: 8px 16px;
             border-radius: 5px;
             font-weight: 600;
+            font-size: 0.9em;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: background 0.2s;
         }
         .buy-btn:hover {
             background: #ccc;
-            transform: scale(1.05);
+        }
+        .buy-btn:disabled {
+            background: #555;
+            cursor: not-allowed;
         }
         .popup {
             display: none;
@@ -130,27 +162,26 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: #000;
-            border: 2px solid #fff;
-            border-radius: 10px;
-            padding: 30px;
+            background: #111;
+            border: 1px solid #fff;
+            border-radius: 5px;
+            padding: 20px;
             text-align: center;
             max-width: 400px;
             width: 90%;
-            animation: popup-appear 0.4s ease-out;
-            z-index: 1000;
+            z-index: 2000;
         }
         .popup.show {
             display: block;
         }
         .popup p {
             font-size: 1.1em;
-            margin: 0 0 10px;
+            margin: 0 0 15px;
         }
         .popup a {
             color: #ccc;
             text-decoration: underline;
-            transition: color 0.3s;
+            transition: color 0.2s;
         }
         .popup a:hover {
             color: #fff;
@@ -168,15 +199,14 @@
             border-radius: 5px;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: background 0.2s;
         }
         .close-btn:hover {
             background: #ccc;
         }
         .error {
             text-align: center;
-            color: #fff;
-            font-size: 1.2em;
+            font-size: 1.1em;
             margin-top: 20px;
             opacity: 0.7;
             grid-column: 1 / -1;
@@ -184,55 +214,65 @@
         .loading {
             text-align: center;
             font-size: 1.1em;
-            opacity: 0.8;
-            animation: pulse 1.5s ease-in-out infinite;
+            opacity: 0.7;
             grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #fff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
         }
         @media (max-width: 600px) {
             h1 {
-                font-size: 2em;
+                font-size: 1.8em;
             }
             .tab {
-                padding: 10px 16px;
-                font-size: 0.9em;
+                padding: 8px 16px;
+                font-size: 0.85em;
             }
             .item {
+                padding: 12px;
+            }
+            .search-bar input {
+                font-size: 0.9em;
+                padding: 10px 35px 10px 12px;
+            }
+            .popup {
                 padding: 15px;
             }
-            .tabs {
-                gap: 5px;
-            }
         }
-        @keyframes glow {
-            0% { text-shadow: 0 0 5px #fff, 0 0 10px #fff; }
-            50% { text-shadow: 0 0 20px #fff, 0 0 30px #fff; }
-            100% { text-shadow: 0 0 5px #fff, 0 0 10px #fff; }
-        }
-        @keyframes popup-appear {
-            from { transform: translate(-50%, -60%) scale(0.8); opacity: 0; }
-            to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 0.8; }
-            50% { opacity: 1; }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Brainrot Market</h1>
-        <div class="tabs">
-            <div class="tab active" data-tab="Legendary">Legendary</div>
-            <div class="tab" data-tab="Mythic">Mythic</div>
-            <div class="tab" data-tab="Secret">Secret</div>
-            <div class="tab" data-tab="Brainrot God">Brainrot God</div>
+    <div class="header">
+        <div class="container">
+            <h1>Rot-Exchange</h1>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search brainrots...">
+                <button class="clear-btn" onclick="clearSearch()">✖</button>
+            </div>
+            <div class="tabs">
+                <div class="tab active" data-tab="Legendary">Legendary</div>
+                <div class="tab" data-tab="Mythic">Mythic</div>
+                <div class="tab" data-tab="Secret">Secret</div>
+                <div class="tab" data-tab="Brainrot God">Brainrot God</div>
+            </div>
         </div>
+    </div>
+    <div class="container">
         <div class="items" id="items">
-            <p class="loading">Loading brainrots...</p>
+            <p class="loading"><span class="spinner"></span>Loading brainrots...</p>
         </div>
     </div>
     <div class="popup" id="popup">
@@ -245,6 +285,8 @@
         const tabs = document.querySelectorAll('.tab');
         const itemsContainer = document.getElementById('items');
         const popup = document.getElementById('popup');
+        const searchInput = document.getElementById('searchInput');
+        const clearBtn = document.querySelector('.clear-btn');
         const jsonUrl = 'https://raw.githubusercontent.com/Showcaser1/RotExchange/main/brainrots.json';
 
         let allBrainrots = [];
@@ -267,7 +309,7 @@
 
         // Load brainrots from GitHub with fallback
         async function loadBrainrots() {
-            itemsContainer.innerHTML = '<p class="loading">Loading brainrots...</p>';
+            itemsContainer.innerHTML = '<p class="loading"><span class="spinner"></span>Loading brainrots...</p>';
             try {
                 const response = await fetch(jsonUrl);
                 if (!response.ok) {
@@ -283,31 +325,48 @@
                 console.error('GitHub fetch failed, using fallback:', error);
                 allBrainrots = fallbackBrainrots;
                 itemsContainer.innerHTML = '<p class="error">Failed to load from GitHub. Using fallback data.</p>';
-                setTimeout(() => displayBrainrots(tabs[0].dataset.tab), 2000); // Delay to show error
+                setTimeout(() => displayBrainrots(tabs[0].dataset.tab), 2000);
                 return;
             }
             displayBrainrots(tabs[0].dataset.tab);
         }
 
-        function displayBrainrots(category) {
+        function displayBrainrots(category, searchQuery = '') {
             itemsContainer.innerHTML = '';
-            const filteredBrainrots = allBrainrots.filter(b => b.category === category);
+            let filteredBrainrots = allBrainrots.filter(b => b.category === category);
+            if (searchQuery) {
+                filteredBrainrots = filteredBrainrots.filter(b => 
+                    b.name.toLowerCase().includes(searchQuery.toLowerCase())
+                );
+            }
             if (filteredBrainrots.length === 0) {
-                itemsContainer.innerHTML = '<p class="error">No brainrots available in this category.</p>';
+                itemsContainer.innerHTML = '<p class="error">No brainrots found.</p>';
                 return;
             }
             filteredBrainrots.forEach((brainrot, index) => {
                 const item = document.createElement('div');
                 item.className = 'item';
-                item.style.animationDelay = `${index * 0.1}s`;
                 item.innerHTML = `
                     <h3>${brainrot.name}</h3>
                     <p>Stock: ${brainrot.stock}</p>
                     <p class="price">Price: ${brainrot.price} Robux</p>
-                    <button class="buy-btn" onclick="showPopup()">Buy</button>
+                    <button class="buy-btn" ${brainrot.stock === 0 ? 'disabled' : ''} onclick="showPopup()">${brainrot.stock === 0 ? 'Out of Stock' : 'Buy'}</button>
                 `;
                 itemsContainer.appendChild(item);
             });
+        }
+
+        function searchBrainrots() {
+            const activeTab = document.querySelector('.tab.active');
+            clearBtn.style.display = searchInput.value ? 'block' : 'none';
+            displayBrainrots(activeTab.dataset.tab, searchInput.value);
+        }
+
+        function clearSearch() {
+            searchInput.value = '';
+            clearBtn.style.display = 'none';
+            const activeTab = document.querySelector('.tab.active');
+            displayBrainrots(activeTab.dataset.tab);
         }
 
         function showPopup() {
@@ -322,9 +381,13 @@
             tab.addEventListener('click', () => {
                 tabs.forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
+                searchInput.value = '';
+                clearBtn.style.display = 'none';
                 displayBrainrots(tab.dataset.tab);
             });
         });
+
+        searchInput.addEventListener('input', searchBrainrots);
 
         // Initial load
         loadBrainrots();
